@@ -1,0 +1,90 @@
+<h4>Formularios <small>data</small></h4>
+<hr>
+<form [formGroup]="forma" (ngSubmit)="guardarCambios()">
+
+    <div formGroupName="nombreCompleto">
+
+        <!-- [ngClass]="{'has-danger': !forma.controls['nombreCompleto'].controls['nombre'].valid && !forma.controls['nombreCompleto'].controls['nombre'].untouched}" -->
+        <div class="form-group row" [ngClass]="{'has-danger': (forma.get('nombreCompleto.nombre').hasError('required') || forma.get('nombreCompleto.nombre').hasError('minlength')) && forma.get('nombreCompleto.nombre').touched}">
+            <label class="col-2 col-form-label">Nombre</label>
+            <div class="col-8">
+
+                <input class="form-control" type="text" placeholder="Nombre" formControlName="nombre">
+                <div *ngIf="forma.get('nombreCompleto.nombre').hasError('required') && !forma.controls['nombreCompleto'].controls['nombre'].untouched" class="form-control-feedback">Requerido</div>
+                <div *ngIf="forma.get('nombreCompleto.nombre').hasError('minlength') && !forma.controls['nombreCompleto'].controls['nombre'].untouched" class="form-control-feedback">Minimo 5 caracteres</div>
+            </div>
+        </div>
+
+        <div class="form-group row" [ngClass]="{'has-danger': forma.get('nombreCompleto.apellido').hasError('required')  && forma.get('nombreCompleto.apellido').touched}">
+            <label class="col-2 col-form-label">Apellido</label>
+            <div class="col-8">
+
+                <input class="form-control" type="text" placeholder="Apellido" formControlName="apellido">
+                <div *ngIf="forma.get('nombreCompleto.apellido').hasError('required') && !forma.controls['nombreCompleto'].controls['apellido'].untouched" class="form-control-feedback">Requerido</div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="form-group row" [ngClass]="{'has-danger': (forma.get('correo').hasError('required') || forma.get('correo').hasError('pattern')) && forma.get('correo').touched}">
+        <label class="col-2 col-form-label">Correo</label>
+        <div class="col-md-8">
+
+            <input class="form-control" type="email" placeholder="Correo electrónico" formControlName="correo">
+            <div *ngIf="forma.get('correo').hasError('required') && !forma.controls['correo'].untouched" class="form-control-feedback">Requerido</div>
+            <div *ngIf="forma.get('correo').hasError('pattern') && !forma.controls['correo'].untouched" class="form-control-feedback">Formato invalido</div>
+
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-2 col-form-label">Pasatiempos</label>
+        <div class="col-md-8" formArrayName="pasatiempos">
+            <input *ngFor="let pasatiempo of forma.controls['pasatiempos'].controls; let i = index" [formControlName]="i" type="text" class="form-control">
+        </div>
+
+        <button (click)="agregarPasatiempo()" type="button" class="btn btn-primary">
+                    Nuevo
+        </button>
+
+    </div>
+    <div class="form-group row">
+        <label class="col-2 col-form-label">Username</label>
+        <div class="col-md-8">
+            <input class="form-control" type="text" placeholder="usuario" formControlName="username">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-2 col-form-label">Password</label>
+        <div class="col-md-8">
+
+            <input class="form-control" type="password" placeholder="password" formControlName="password1">
+
+
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-2 col-form-label">Repetir contraseña</label>
+        <div class="col-md-8">
+
+            <input class="form-control" type="password" placeholder="Repetir contraseña" formControlName="password2">
+
+
+        </div>
+    </div>
+
+
+    <div class="form-group row">
+        <label class="col-2 col-form-label">&nbsp;</label>
+        <div class="input-group col-md-8">
+            <button type="submit" class="btn btn-outline-primary">
+                Guardar
+            </button>
+        </div>
+    </div>
+
+    {{forma.valid}}
+    <br> {{forma.status}}
+
+
+</form>
